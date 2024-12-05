@@ -1,15 +1,16 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import mongoose from "mongoose";
 import cookieParser from 'cookie-parser'; 
 import 'dotenv/config';
 import cors from 'cors'; //npm install cors
+import path from 'path';
 
 const app = express()
-const port = 3000;
+const port = process.env.PORT || 5000;
 app.use(cors()); //open to the whole world. Highly dangerous!!!
 
 app.use(express.json());
-app.use(express.static('client/build'));
+app.use(express.static(path.join(__dirname, '../../client/build')));
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
@@ -27,6 +28,10 @@ mongoose.connect(`${dbUrl}/${database}`).then(()=>{
     console.error(err)
 });
 
+app.get('/api/example', (_req: Request, res: Response) => {
+  res.json({ message: 'Hello from server' });
+});
+
 //routes
 import clientsRouter from './routes/clients/clientRoutes';
 app.use("/api/clients", clientsRouter);
@@ -37,6 +42,10 @@ app.use("/api/comments", commentsRouter);
 import Purchase from "./routes/purchase/purchaseRouter";
 app.use("/api/purchase", Purchase);
 
+app.get('*', (_req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+});
+
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Server listening on port ${port}`)
 })
