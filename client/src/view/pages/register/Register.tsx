@@ -68,7 +68,7 @@ const Register: React.FC = () => {
                         type="number"
                         id="yearOfBirth"
                         value={yearOfBirth}
-                        onChange={(e) => setYearOfBirth(e.target.value)}
+                        onChange={(e) => setYearOfBirth(new Date(e.target.value).getTime())}
                     />
                 </div>
                 <div>

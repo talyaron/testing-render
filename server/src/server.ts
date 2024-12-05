@@ -10,12 +10,10 @@ const port = process.env.PORT || 5000;
 app.use(cors()); //open to the whole world. Highly dangerous!!!
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../../client/build')));
+app.use(express.static(path.join(__dirname, '../../client/dist')));
 app.use(cookieParser());
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+
 
 //DB
 const dbUrl = process.env.DB_URL;
@@ -43,7 +41,7 @@ import Purchase from "./routes/purchase/purchaseRouter";
 app.use("/api/purchase", Purchase);
 
 app.get('*', (_req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
 });
 
 app.listen(port, () => {
